@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 //*
 // Make a simple tokenizer that can parse a hello would program in c and print the individual tokens along with their respective coordenates.
@@ -22,6 +24,95 @@ void next_char(char *source, struct Location)
 
 
 
+int is_space(char *source, struct Location)
+{
+  if (isspace(source[loc.cur]))
+    {
+      return true;
+    }
+  else return false;
+}
+
+int is_not_empty(char *source, struct Location)
+{
+  int len;
+  len = strlen(source);
+  if (loc.cur < len)
+    {
+      return 1;
+    }
+  else return false;
+}
+
+int is_empty(char *source, struct Location)
+{
+  int len;
+  len = strlen(source);
+  if (loc.cur >= len)
+    {
+      return true;
+    }
+  else return false;
+}
+
+void drop_line(int is_not_empty(), char *source, void chop_char(), struct Location)
+{
+  char x;
+  x = "\n";
+  while (is_not_empty() && source[loc.cur] != x)
+    {
+    chop_char();
+    }
+  if (is_not_empty())
+    {
+      chop_char();
+    }
+}
+
+void chop_char(int is_not_empty(), char *source)
+{
+  char x;
+  if (is_not_empty())
+    {
+      x = source[loc.cur];
+      loc.cur++;
+      if (x == '\n')
+	{
+	  loc.row++;
+	}
+    }
+}
+
+void trim_left(void chop_char(), int is_not_empty(), char *source, struct Location)
+{
+  while(is_not_empty() && isspace(source[loc.cur]))
+    {
+      chop_char();
+    }
+}
+
+int next_token(int is_not_empty(), char *source, void drop_line(), void trim_left(), struct Location, int is_empty())
+{
+  char x;
+  x = "#";
+  
+  trim_left();
+  while (is_not_empty())
+    {
+      if (source[loc.cur] == x)
+	{
+      break;
+      drop_line();
+      trim_left();
+	}
+    }
+  if (is_empty())
+    {
+    return 69;
+    }
+  return 0;
+}
+
 int main()
 {
   // Open the file
@@ -42,33 +133,13 @@ fread(source, fsize, 1, fptr);
 fclose(fptr);
 
 source[fsize] = 0;
- int i;
- for(i = 0; i != 30; i++)
-   {
-     next_char(source, loc);
-   }
+//int i;
+
+ void print_everything();
+
+ return 0;
 
 }
-
-/*void is_not_empty(char *source, struct Location)
-{
-  len = strlen(source);
-  if (loc.cur != len -1)
-    {
-      return
-    }
-};
-
-void drop_line()
-{
-  
-};
-
-void chop_char()
-{
- 
-};*/
-
 
 /*void next_char(char *source, )
  {
